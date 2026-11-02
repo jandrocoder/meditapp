@@ -20,14 +20,14 @@ input,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px soli
 [hidden]{display:none!important}
 button.round{border-radius:999px;min-width:160px;padding:14px 32px;font-size:1.05rem}
 button.round.stop{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
-.picker{position:relative;display:flex;justify-content:center;gap:8px;height:240px;margin:20px auto 0;max-width:340px;padding-top:28px}
-.pick-bar{position:absolute;left:0;right:0;top:calc(28px + 80px);height:40px;background:var(--card);border-radius:10px}
+.picker{position:relative;display:flex;justify-content:center;width:210px;height:160px}
+.pick-bar{position:absolute;left:0;right:0;top:60px;height:40px;background:var(--card);border-radius:10px}
 .pick-col{position:relative;flex:1;text-align:center}
-.pick-label{position:absolute;top:-24px;left:0;right:0;font-size:.8rem;color:var(--muted)}
-.wheel{position:relative;height:200px;overflow-y:scroll;scroll-snap-type:y mandatory;padding:80px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+.pick-col::after{content:attr(data-unit);position:absolute;top:60px;right:2px;line-height:40px;font-size:.75rem;color:var(--muted);pointer-events:none}
+.wheel{position:relative;height:160px;overflow-y:scroll;scroll-snap-type:y mandatory;padding:60px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;
   -webkit-mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(transparent,#000 30%,#000 70%,transparent)}
 .wheel::-webkit-scrollbar{display:none}
-.wheel div{height:40px;line-height:40px;font-size:1.6rem;scroll-snap-align:center;font-variant-numeric:tabular-nums}
+.wheel div{height:40px;line-height:40px;font-size:1.5rem;padding-right:14px;scroll-snap-align:center;font-variant-numeric:tabular-nums}
 .card{background:var(--card);border-radius:14px;padding:16px;margin-top:16px}
 .card label{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px;color:var(--muted)}
 .card label input{width:90px}

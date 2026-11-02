@@ -68,7 +68,7 @@ function showTime(left) {
 
 function setRunningUI(on) {
   $('#picker').hidden = on;
-  $('#dial').hidden = !on;
+  $('#timeLeft').hidden = !on;
   const b = $('#startBtn');
   b.textContent = on ? 'Terminar' : 'Comenzar';
   b.classList.toggle('stop', on);

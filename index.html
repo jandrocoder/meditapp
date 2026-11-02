@@ -12,20 +12,19 @@
 <body>
 <main>
   <section id="tab-meditar" class="tab active">
-    <div id="picker" class="picker">
-      <div class="pick-bar"></div>
-      <div class="pick-col"><span class="pick-label">horas</span><div class="wheel" id="wh" data-max="23"></div></div>
-      <div class="pick-col"><span class="pick-label">min</span><div class="wheel" id="wm" data-max="59"></div></div>
-      <div class="pick-col"><span class="pick-label">seg</span><div class="wheel" id="ws" data-max="59"></div></div>
-    </div>
-
-    <div id="dial" class="dial" hidden>
+    <div id="dial" class="dial">
       <svg viewBox="0 0 200 200">
         <circle class="track" cx="100" cy="100" r="90"/>
         <circle class="bar" id="timerBar" cx="100" cy="100" r="90"/>
       </svg>
       <div class="dial-text">
-        <div id="timeLeft">10:00</div>
+        <div id="timeLeft" hidden>10:00</div>
+        <div id="picker" class="picker">
+          <div class="pick-bar"></div>
+          <div class="pick-col" data-unit="h"><div class="wheel" id="wh" data-max="23"></div></div>
+          <div class="pick-col" data-unit="min"><div class="wheel" id="wm" data-max="59"></div></div>
+          <div class="pick-col" data-unit="s"><div class="wheel" id="ws" data-max="59"></div></div>
+        </div>
       </div>
     </div>
 
