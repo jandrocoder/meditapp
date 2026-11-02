@@ -12,31 +12,25 @@
 <body>
 <main>
   <section id="tab-meditar" class="tab active">
-    <div class="dial">
+    <div id="picker" class="picker">
+      <div class="pick-bar"></div>
+      <div class="pick-col"><span class="pick-label">horas</span><div class="wheel" id="wh" data-max="23"></div></div>
+      <div class="pick-col"><span class="pick-label">min</span><div class="wheel" id="wm" data-max="59"></div></div>
+      <div class="pick-col"><span class="pick-label">seg</span><div class="wheel" id="ws" data-max="59"></div></div>
+    </div>
+
+    <div id="dial" class="dial" hidden>
       <svg viewBox="0 0 200 200">
         <circle class="track" cx="100" cy="100" r="90"/>
         <circle class="bar" id="timerBar" cx="100" cy="100" r="90"/>
       </svg>
       <div class="dial-text">
         <div id="timeLeft">10:00</div>
-        <div id="timeHint" class="muted">minutos</div>
-      </div>
-    </div>
-
-    <div id="setup">
-      <div class="presets">
-        <button data-min="5">5</button>
-        <button data-min="10" class="sel">10</button>
-        <button data-min="15">15</button>
-        <button data-min="20">20</button>
-        <button data-min="30">30</button>
-        <input id="customMin" type="number" min="1" max="180" placeholder="otro">
       </div>
     </div>
 
     <div class="row">
-      <button id="startBtn" class="primary">Comenzar</button>
-      <button id="resetBtn" class="ghost" hidden>Terminar</button>
+      <button id="startBtn" class="primary round">Comenzar</button>
     </div>
 
     <div id="today" class="muted center"></div>

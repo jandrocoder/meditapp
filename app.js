@@ -44,40 +44,47 @@ $$('nav button').forEach(b => b.onclick = () => {
 });
 
 // ---------- timer ----------
-let minutes = 10, total = 0, endAt = 0, running = false, tick = null, pending = null;
+let total = 0, endAt = 0, running = false, tick = null, pending = null;
 
-const fmt = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+const pad = n => String(n).padStart(2, '0');
+const fmt = s => (s >= 3600 ? Math.floor(s / 3600) + ':' : '') + `${pad(Math.floor(s % 3600 / 60))}:${pad(s % 60)}`;
+
+const ITEM = 40;
+const wheels = { h: $('#wh'), m: $('#wm'), s: $('#ws') };
+Object.values(wheels).forEach(w => {
+  for (let i = 0; i <= +w.dataset.max; i++) w.insertAdjacentHTML('beforeend', `<div>${pad(i)}</div>`);
+});
+const wheelVal = w => Math.round(w.scrollTop / ITEM);
+const setWheels = ({ h, m, s }) => { wheels.h.scrollTop = h * ITEM; wheels.m.scrollTop = m * ITEM; wheels.s.scrollTop = s * ITEM; };
+const pickedSeconds = () => wheelVal(wheels.h) * 3600 + wheelVal(wheels.m) * 60 + wheelVal(wheels.s);
+const savePick = () => localStorage.setItem('pick', JSON.stringify({ h: wheelVal(wheels.h), m: wheelVal(wheels.m), s: wheelVal(wheels.s) }));
+Object.values(wheels).forEach(w => w.addEventListener('scroll', () => { clearTimeout(w.t); w.t = setTimeout(savePick, 200); }));
+setWheels(load('pick', { h: 0, m: 10, s: 0 }));
 
 function showTime(left) {
   $('#timeLeft').textContent = fmt(left);
   $('#timerBar').style.strokeDashoffset = total ? CIRC * (1 - left / total) : 0;
 }
 
-$$('.presets button').forEach(b => b.onclick = () => {
-  minutes = +b.dataset.min;
-  $('#customMin').value = '';
-  $$('.presets button').forEach(x => x.classList.toggle('sel', x === b));
-  showTime(minutes * 60);
-});
-$('#customMin').oninput = e => {
-  const v = Math.max(1, Math.min(180, +e.target.value || 0));
-  if (!v) return;
-  minutes = v;
-  $$('.presets button').forEach(x => x.classList.remove('sel'));
-  showTime(minutes * 60);
-};
+function setRunningUI(on) {
+  $('#picker').hidden = on;
+  $('#dial').hidden = !on;
+  const b = $('#startBtn');
+  b.textContent = on ? 'Terminar' : 'Comenzar';
+  b.classList.toggle('stop', on);
+}
 
 $('#startBtn').onclick = () => {
+  if (running) return finish(false);
+  total = pickedSeconds();
+  if (total < 1) return;
   ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); // unlock audio on user gesture
   if (ctx.state === 'suspended') ctx.resume();
-  if (running) return;
-  total = minutes * 60;
   endAt = Date.now() + total * 1000;
   running = true;
-  $('#startBtn').hidden = true;
-  $('#resetBtn').hidden = false;
-  $('#setup').hidden = true;
   $('#reflect').hidden = true;
+  setRunningUI(true);
+  showTime(total);
   bowl();
   tick = setInterval(update, 250);
   update();
@@ -89,18 +96,14 @@ function update() {
   if (left === 0) finish(true);
 }
 
-$('#resetBtn').onclick = () => finish(false);
-
 function finish(completed) {
   clearInterval(tick);
   running = false;
-  const elapsed = Math.round(Math.min(total, total - (endAt - Date.now()) / 1000) / 60);
-  $('#startBtn').hidden = false;
-  $('#resetBtn').hidden = true;
-  $('#setup').hidden = false;
-  const mins = completed ? minutes : elapsed;
+  const secs = completed ? total : Math.round(Math.min(total, total - (endAt - Date.now()) / 1000));
+  const mins = Math.round(secs / 60);
   total = 0;
-  showTime(minutes * 60);
+  setRunningUI(false);
+  setWheels(load('pick', { h: 0, m: 10, s: 0 }));
   if (completed) bowl();
   if (mins >= 1) {
     const now = new Date();
@@ -203,7 +206,6 @@ $('#goalDay').onchange = e => { goals.day = Math.max(1, +e.target.value || 1); s
 $('#goalWeek').onchange = e => { goals.week = Math.max(1, +e.target.value || 1); save(); renderAll(); };
 
 function renderAll() { renderToday(); renderJournal(); renderCalendar(); renderGoals(); }
-showTime(minutes * 60);
 renderAll();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
