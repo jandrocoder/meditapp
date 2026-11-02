@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MeditApp</title>
+<meta name="theme-color" content="#f6efe0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <section id="tab-meditar" class="tab active">
+    <div class="dial">
+      <svg viewBox="0 0 200 200">
+        <circle class="track" cx="100" cy="100" r="90"/>
+        <circle class="bar" id="timerBar" cx="100" cy="100" r="90"/>
+      </svg>
+      <div class="dial-text">
+        <div id="timeLeft">10:00</div>
+        <div id="timeHint" class="muted">minutos</div>
+      </div>
+    </div>
+
+    <div id="setup">
+      <div class="presets">
+        <button data-min="5">5</button>
+        <button data-min="10" class="sel">10</button>
+        <button data-min="15">15</button>
+        <button data-min="20">20</button>
+        <button data-min="30">30</button>
+        <input id="customMin" type="number" min="1" max="180" placeholder="otro">
+      </div>
+    </div>
+
+    <div class="row">
+      <button id="startBtn" class="primary">Comenzar</button>
+      <button id="resetBtn" class="ghost" hidden>Terminar</button>
+    </div>
+
+    <div id="today" class="muted center"></div>
+
+    <div id="reflect" class="card" hidden>
+      <h3>Sesión completada 🔔</h3>
+      <p class="muted">¿Cómo te sentiste? Escribe una reflexión.</p>
+      <textarea id="reflectText" rows="4" placeholder="Hoy noté que..."></textarea>
+      <div class="row">
+        <button id="saveReflect" class="primary">Guardar</button>
+        <button id="skipReflect" class="ghost">Omitir</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-diario" class="tab">
+    <h2>Diario</h2>
+    <div id="journal"></div>
+  </section>
+
+  <section id="tab-calendario" class="tab">
+    <div class="cal-head">
+      <button id="prevMonth" class="ghost">‹</button>
+      <h2 id="monthTitle"></h2>
+      <button id="nextMonth" class="ghost">›</button>
+    </div>
+    <div id="calendar" class="calendar"></div>
+    <div id="dayDetail" class="card" hidden></div>
+  </section>
+
+  <section id="tab-metas" class="tab">
+    <h2>Metas</h2>
+    <div class="card">
+      <h3>Hoy</h3>
+      <div class="meter"><div id="dayBar"></div></div>
+      <div id="dayText" class="muted"></div>
+      <label>Meta diaria (min) <input id="goalDay" type="number" min="1" max="600"></label>
+    </div>
+    <div class="card">
+      <h3>Esta semana</h3>
+      <div class="meter"><div id="weekBar"></div></div>
+      <div id="weekText" class="muted"></div>
+      <label>Meta semanal (min) <input id="goalWeek" type="number" min="1" max="4200"></label>
+    </div>
+    <div class="card">
+      <h3>Racha</h3>
+      <div id="streak" class="big"></div>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button data-tab="meditar" class="on">Meditar</button>
+  <button data-tab="diario">Diario</button>
+  <button data-tab="calendario">Calendario</button>
+  <button data-tab="metas">Metas</button>
+</nav>
+<script src="app.js"></script>
+</body>
+</html>
