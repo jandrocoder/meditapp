@@ -1,4 +1,4 @@
-const CACHE = 'meditapp-v3';
+const CACHE = 'meditapp-v4';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

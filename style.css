@@ -19,6 +19,10 @@ input,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px soli
 #timeLeft{font-size:3.2rem;font-weight:300;font-variant-numeric:tabular-nums}
 [hidden]{display:none!important}
 button.round{border-radius:999px;min-width:160px;padding:14px 32px;font-size:1.05rem}
+.row{flex-wrap:nowrap;align-items:center}
+.row .round{min-width:0;padding:14px 22px}
+button.round.small{padding:14px 16px;font-size:.9rem;color:var(--muted)}
+#startBtn{min-width:120px}
 button.round.stop{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
 .controls{margin-top:12px}
 .picker{position:relative;display:flex;justify-content:center;width:100%;max-width:320px;height:160px;margin:0 auto}

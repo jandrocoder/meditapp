@@ -44,7 +44,7 @@ $$('nav button').forEach(b => b.onclick = () => {
 });
 
 // ---------- timer ----------
-let total = 0, endAt = 0, running = false, tick = null, pending = null;
+let total = 0, endAt = 0, remaining = 0, running = false, paused = false, tick = null, pending = null;
 
 const pad = n => String(n).padStart(2, '0');
 const fmt = s => (s >= 3600 ? Math.floor(s / 3600) + ':' : '') + `${pad(Math.floor(s % 3600 / 60))}:${pad(s % 60)}`;
@@ -74,18 +74,22 @@ function showTime(left) {
 function setRunningUI(on) {
   $('#picker').classList.toggle('off', on);
   const b = $('#startBtn');
-  b.textContent = on ? 'Terminar' : 'Comenzar';
-  b.classList.toggle('stop', on);
+  b.textContent = !on ? 'Comenzar' : paused ? 'Continuar' : 'Pausar';
+  b.classList.toggle('stop', on && !paused);
+  $('#resetBtn').hidden = $('#stopBtn').hidden = !on;
 }
 
+const leftSecs = () => paused ? remaining : Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+
 $('#startBtn').onclick = () => {
-  if (running) return finish(false);
+  if (running) return paused ? resume() : pause();
   total = pickedSeconds();
   if (total < 1) return;
   ctx = ctx || new (window.AudioContext || window.webkitAudioContext)(); // unlock audio on user gesture
   if (ctx.state === 'suspended') ctx.resume();
   endAt = Date.now() + total * 1000;
   running = true;
+  paused = false;
   $('#reflect').hidden = true;
   setRunningUI(true);
   showTime(total);
@@ -94,22 +98,45 @@ $('#startBtn').onclick = () => {
   update();
 };
 
+function pause() {
+  remaining = leftSecs();
+  paused = true;
+  clearInterval(tick);
+  setRunningUI(true);
+}
+
+function resume() {
+  endAt = Date.now() + remaining * 1000;
+  paused = false;
+  setRunningUI(true);
+  tick = setInterval(update, 250);
+  update();
+}
+
 function update() {
-  const left = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+  const left = leftSecs();
   showTime(left);
   if (left === 0) finish(true);
 }
 
-function finish(completed) {
+function backToPicker() {
   clearInterval(tick);
-  running = false;
-  const secs = completed ? total : Math.round(Math.min(total, total - (endAt - Date.now()) / 1000));
-  const mins = Math.round(secs / 60);
+  running = paused = false;
   total = 0;
   setRunningUI(false);
   setWheels(load('pick', { h: 0, m: 10, s: 0 }));
   showTime(0);
   previewPick();
+}
+
+// reset: cancel the countdown and go back to the wheels without saving anything
+$('#resetBtn').onclick = backToPicker;
+$('#stopBtn').onclick = () => finish(false);
+
+function finish(completed) {
+  const secs = completed ? total : total - leftSecs();
+  const mins = Math.round(secs / 60);
+  backToPicker();
   if (completed) bowl();
   if (mins >= 1) {
     const now = new Date();
