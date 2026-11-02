@@ -20,7 +20,10 @@ input,textarea{font:inherit;color:var(--fg);background:var(--bg);border:1px soli
 [hidden]{display:none!important}
 button.round{border-radius:999px;min-width:160px;padding:14px 32px;font-size:1.05rem}
 button.round.stop{background:var(--card);color:var(--accent);border:1px solid var(--accent)}
-.picker{position:relative;display:flex;justify-content:center;width:210px;height:160px}
+#tab-meditar.active{display:flex;flex-direction:column;min-height:calc(100vh - 130px)}
+.controls{margin-top:auto}
+.picker{position:relative;display:flex;justify-content:center;width:100%;max-width:320px;height:160px;margin:0 auto}
+.picker.off{visibility:hidden}
 .pick-bar{position:absolute;left:0;right:0;top:60px;height:40px;background:var(--card);border-radius:10px}
 .pick-col{position:relative;flex:1;text-align:center}
 .pick-col::after{content:attr(data-unit);position:absolute;top:60px;right:2px;line-height:40px;font-size:.75rem;color:var(--muted);pointer-events:none}

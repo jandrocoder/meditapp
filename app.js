@@ -58,8 +58,13 @@ const wheelVal = w => Math.round(w.scrollTop / ITEM);
 const setWheels = ({ h, m, s }) => { wheels.h.scrollTop = h * ITEM; wheels.m.scrollTop = m * ITEM; wheels.s.scrollTop = s * ITEM; };
 const pickedSeconds = () => wheelVal(wheels.h) * 3600 + wheelVal(wheels.m) * 60 + wheelVal(wheels.s);
 const savePick = () => localStorage.setItem('pick', JSON.stringify({ h: wheelVal(wheels.h), m: wheelVal(wheels.m), s: wheelVal(wheels.s) }));
-Object.values(wheels).forEach(w => w.addEventListener('scroll', () => { clearTimeout(w.t); w.t = setTimeout(savePick, 200); }));
+const previewPick = () => { if (!running) $('#timeLeft').textContent = fmt(pickedSeconds()); };
+Object.values(wheels).forEach(w => w.addEventListener('scroll', () => {
+  previewPick();
+  clearTimeout(w.t); w.t = setTimeout(savePick, 200);
+}));
 setWheels(load('pick', { h: 0, m: 10, s: 0 }));
+previewPick();
 
 function showTime(left) {
   $('#timeLeft').textContent = fmt(left);
@@ -67,8 +72,7 @@ function showTime(left) {
 }
 
 function setRunningUI(on) {
-  $('#picker').hidden = on;
-  $('#timeLeft').hidden = !on;
+  $('#picker').classList.toggle('off', on);
   const b = $('#startBtn');
   b.textContent = on ? 'Terminar' : 'Comenzar';
   b.classList.toggle('stop', on);
@@ -104,6 +108,8 @@ function finish(completed) {
   total = 0;
   setRunningUI(false);
   setWheels(load('pick', { h: 0, m: 10, s: 0 }));
+  showTime(0);
+  previewPick();
   if (completed) bowl();
   if (mins >= 1) {
     const now = new Date();

@@ -18,18 +18,20 @@
         <circle class="bar" id="timerBar" cx="100" cy="100" r="90"/>
       </svg>
       <div class="dial-text">
-        <div id="timeLeft" hidden>10:00</div>
-        <div id="picker" class="picker">
-          <div class="pick-bar"></div>
-          <div class="pick-col" data-unit="h"><div class="wheel" id="wh" data-max="23"></div></div>
-          <div class="pick-col" data-unit="min"><div class="wheel" id="wm" data-max="59"></div></div>
-          <div class="pick-col" data-unit="s"><div class="wheel" id="ws" data-max="59"></div></div>
-        </div>
+        <div id="timeLeft">10:00</div>
       </div>
     </div>
 
-    <div class="row">
-      <button id="startBtn" class="primary round">Comenzar</button>
+    <div class="controls">
+      <div id="picker" class="picker">
+        <div class="pick-bar"></div>
+        <div class="pick-col" data-unit="h"><div class="wheel" id="wh" data-max="23"></div></div>
+        <div class="pick-col" data-unit="min"><div class="wheel" id="wm" data-max="59"></div></div>
+        <div class="pick-col" data-unit="s"><div class="wheel" id="ws" data-max="59"></div></div>
+      </div>
+      <div class="row">
+        <button id="startBtn" class="primary round">Comenzar</button>
+      </div>
     </div>
 
     <div id="today" class="muted center"></div>
