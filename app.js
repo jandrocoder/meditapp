@@ -214,4 +214,4 @@ $('#goalWeek').onchange = e => { goals.week = Math.max(1, +e.target.value || 1);
 function renderAll() { renderToday(); renderJournal(); renderCalendar(); renderGoals(); }
 renderAll();
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).catch(() => {});

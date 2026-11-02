@@ -1,4 +1,4 @@
-const CACHE = 'meditapp-v1';
+const CACHE = 'meditapp-v3';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -10,7 +10,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   // network first so updates reach the phone; cache is the offline fallback
-  e.respondWith(fetch(e.request).then(res => {
+  e.respondWith(fetch(e.request, { cache: 'no-store' }).then(res => {
     const copy = res.clone();
     caches.open(CACHE).then(c => c.put(e.request, copy));
     return res;
